@@ -24,7 +24,7 @@ function RankRow({ rank, name, sub, badge, d }) {
     <li className="flex items-center gap-3 py-2 border-b border-white/5 last:border-0">
       <span className="w-6 text-right text-xs font-mono text-gray-500 shrink-0">{rank}</span>
       <div className="flex-1 min-w-0">
-        <p className="truncate text-sm font-medium text-gray-100">{name}</p>
+        <p className="break-words text-sm font-medium text-gray-100">{name}</p>
         <p className="truncate text-xs text-gray-500">{sub}</p>
       </div>
       {badge}
