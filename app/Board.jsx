@@ -87,7 +87,7 @@ export default function Board({ music, artists, beauty, hashtags, insight }) {
       {/* Panels */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
         {/* Music */}
-        <Panel icon={Music} title="バズ曲 TOP10" color="text-sky-400">
+        <Panel icon={Music} title="バズ曲 TOP20" color="text-sky-400">
           <ul>
             {(music ?? []).map((item, i) => (
               <RankRow
@@ -102,7 +102,7 @@ export default function Board({ music, artists, beauty, hashtags, insight }) {
         </Panel>
 
         {/* Artists */}
-        <Panel icon={Mic2} title="バズアーティスト TOP10" color="text-indigo-400">
+        <Panel icon={Mic2} title="バズアーティスト TOP20" color="text-indigo-400">
           <ul>
             {(artists ?? []).map((item, i) => (
               <RankRow
@@ -117,7 +117,7 @@ export default function Board({ music, artists, beauty, hashtags, insight }) {
         </Panel>
 
         {/* Beauty */}
-        <Panel icon={ShoppingBag} title="コスメ売れ筋 TOP10" color="text-pink-400">
+        <Panel icon={ShoppingBag} title="コスメ売れ筋 TOP20" color="text-pink-400">
           <ul>
             {(beauty ?? []).map((item, i) => (
               <RankRow
@@ -139,7 +139,7 @@ export default function Board({ music, artists, beauty, hashtags, insight }) {
         </Panel>
 
         {/* Hashtags */}
-        <Panel icon={Hash} title="ハッシュタグ TOP10" color="text-emerald-400">
+        <Panel icon={Hash} title="ハッシュタグ TOP20" color="text-emerald-400">
           <ul>
             {(hashtags ?? []).map((item, i) => (
               <RankRow
