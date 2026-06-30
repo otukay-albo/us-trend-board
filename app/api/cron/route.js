@@ -10,24 +10,36 @@ export async function GET(request) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  try {
-    const [music, artists, beauty, hashtags] = await Promise.all([
-      fetchMusic(),
-      fetchArtists(),
-      fetchBeauty(),
-      fetchHashtags(),
-    ]);
+  // 有効なデータか（空 or 全項目が "—" のような壊れたデータは保存しない）
+  const isValid = (items) =>
+    Array.isArray(items) &&
+    items.length > 0 &&
+    items.some((it) => it && it.name && it.name !== "—");
 
-    const [m, a, b, h] = await Promise.all([
-      saveSnapshot("music", music),
-      saveSnapshot("artists", artists),
-      saveSnapshot("beauty", beauty),
-      saveSnapshot("hashtags", hashtags),
-    ]);
+  try {
+    const fetched = {
+      music: await fetchMusic().catch(() => null),
+      artists: await fetchArtists().catch(() => null),
+      beauty: await fetchBeauty().catch(() => null),
+      hashtags: await fetchHashtags().catch(() => null),
+    };
+
+    // 有効な軸だけ保存（無効なら既存のRedisデータを温存して上書きしない）
+    const saved = {};
+    const skipped = {};
+    for (const [kind, items] of Object.entries(fetched)) {
+      if (isValid(items)) {
+        const s = await saveSnapshot(kind, items);
+        saved[kind] = { count: s.length, top: s[0]?.name ?? null };
+      } else {
+        skipped[kind] = true;
+      }
+    }
 
     return Response.json({
       ok: true,
-      counts: { music: m.length, artists: a.length, beauty: b.length, hashtags: h.length },
+      saved,
+      skipped,
       updatedAt: new Date().toISOString(),
     });
   } catch (err) {
