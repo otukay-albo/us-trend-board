@@ -19,12 +19,23 @@ function DeltaBadge({ d }) {
   );
 }
 
-function RankRow({ rank, name, sub, badge, d }) {
+function RankRow({ rank, name, sub, badge, d, url }) {
   return (
     <li className="flex items-center gap-3 py-2.5 border-b border-stone-100 last:border-0">
       <span className="w-6 text-right text-xs font-mono text-stone-400 shrink-0">{rank}</span>
       <div className="flex-1 min-w-0">
-        <p className="break-words text-sm font-medium text-stone-800">{name}</p>
+        {url ? (
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="break-words text-sm font-medium text-stone-800 hover:text-sky-600 hover:underline transition"
+          >
+            {name}
+          </a>
+        ) : (
+          <p className="break-words text-sm font-medium text-stone-800">{name}</p>
+        )}
         <p className="truncate text-xs text-stone-400">{sub}</p>
       </div>
       {badge}
@@ -106,25 +117,25 @@ export default function Board({ music, artists, beauty, hashtags, insight, trivi
       {/* Panels */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
         {/* Music */}
-        <Panel icon={Music} title="バズ曲 TOP20" color="text-sky-500">
+        <Panel icon={Music} title="バズ曲 TOP15" color="text-sky-500">
           <ul>
             {(music ?? []).map((item, i) => (
-              <RankRow key={i} rank={i + 1} name={item.name} sub={item.sub} d={item.d} />
+              <RankRow key={i} rank={i + 1} name={item.name} sub={item.sub} d={item.d} url={item.url} />
             ))}
           </ul>
         </Panel>
 
         {/* Artists */}
-        <Panel icon={Mic2} title="バズアーティスト TOP20" color="text-indigo-400">
+        <Panel icon={Mic2} title="バズアーティスト TOP15" color="text-indigo-400">
           <ul>
             {(artists ?? []).map((item, i) => (
-              <RankRow key={i} rank={i + 1} name={item.name} sub={item.sub} d={item.d} />
+              <RankRow key={i} rank={i + 1} name={item.name} sub={item.sub} d={item.d} url={item.url} />
             ))}
           </ul>
         </Panel>
 
         {/* Beauty */}
-        <Panel icon={ShoppingBag} title="コスメ売れ筋 TOP20" color="text-pink-400">
+        <Panel icon={ShoppingBag} title="コスメ売れ筋 TOP15" color="text-pink-400">
           <ul>
             {(beauty ?? []).map((item, i) => (
               <RankRow
@@ -133,6 +144,7 @@ export default function Board({ music, artists, beauty, hashtags, insight, trivi
                 name={item.name}
                 sub={item.sub}
                 d={item.d}
+                url={item.url}
                 badge={
                   item.kbeauty ? (
                     <span className="shrink-0 flex items-center gap-0.5 text-[10px] font-bold text-amber-600 bg-amber-100 px-1.5 py-0.5 rounded-full">
@@ -146,10 +158,10 @@ export default function Board({ music, artists, beauty, hashtags, insight, trivi
         </Panel>
 
         {/* Hashtags */}
-        <Panel icon={Hash} title="ハッシュタグ TOP20" color="text-emerald-500">
+        <Panel icon={Hash} title="ハッシュタグ TOP15" color="text-emerald-500">
           <ul>
             {(hashtags ?? []).map((item, i) => (
-              <RankRow key={i} rank={i + 1} name={`#${item.name}`} sub={item.sub} d={item.d} />
+              <RankRow key={i} rank={i + 1} name={`#${item.name}`} sub={item.sub} d={item.d} url={item.url} />
             ))}
           </ul>
         </Panel>
