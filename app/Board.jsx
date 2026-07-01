@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Music, Mic2, ShoppingBag, Hash, RefreshCw, Sparkles, TrendingUp, TrendingDown, Minus, Star, Lightbulb } from "lucide-react";
+import { Music, Mic2, ShoppingBag, ShoppingCart, Hash, RefreshCw, Sparkles, TrendingUp, TrendingDown, Minus, Star, Lightbulb } from "lucide-react";
 
 function DeltaBadge({ d }) {
   if (!d || d.t === "same") return <Minus className="w-3 h-3 text-stone-300" />;
@@ -56,7 +56,7 @@ function Panel({ icon: Icon, title, color, children }) {
   );
 }
 
-export default function Board({ music, artists, beauty, hashtags, insight, trivia }) {
+export default function Board({ music, artists, beauty, hashtags, shop, insight, trivia }) {
   const router = useRouter();
   const [refreshing, setRefreshing] = useState(false);
 
@@ -67,7 +67,7 @@ export default function Board({ music, artists, beauty, hashtags, insight, trivi
   }
 
   return (
-    <main className="max-w-6xl mx-auto px-4 py-8 space-y-5">
+    <main className="max-w-7xl mx-auto px-4 py-8 space-y-5">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -115,9 +115,9 @@ export default function Board({ music, artists, beauty, hashtags, insight, trivi
       </div>
 
       {/* Panels */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
         {/* Music */}
-        <Panel icon={Music} title="バズ曲 TOP15" color="text-sky-500">
+        <Panel icon={Music} title="バズ曲 TOP10" color="text-sky-500">
           <ul>
             {(music ?? []).map((item, i) => (
               <RankRow key={i} rank={i + 1} name={item.name} sub={item.sub} d={item.d} url={item.url} />
@@ -126,7 +126,7 @@ export default function Board({ music, artists, beauty, hashtags, insight, trivi
         </Panel>
 
         {/* Artists */}
-        <Panel icon={Mic2} title="バズアーティスト TOP15" color="text-indigo-400">
+        <Panel icon={Mic2} title="バズアーティスト TOP10" color="text-indigo-400">
           <ul>
             {(artists ?? []).map((item, i) => (
               <RankRow key={i} rank={i + 1} name={item.name} sub={item.sub} d={item.d} url={item.url} />
@@ -135,7 +135,7 @@ export default function Board({ music, artists, beauty, hashtags, insight, trivi
         </Panel>
 
         {/* Beauty */}
-        <Panel icon={ShoppingBag} title="コスメ売れ筋 TOP15" color="text-pink-400">
+        <Panel icon={ShoppingBag} title="コスメ売れ筋 TOP10" color="text-pink-400">
           <ul>
             {(beauty ?? []).map((item, i) => (
               <RankRow
@@ -157,8 +157,31 @@ export default function Board({ music, artists, beauty, hashtags, insight, trivi
           </ul>
         </Panel>
 
+        {/* TikTok Shop (FastMoss相当) */}
+        <Panel icon={ShoppingCart} title="TikTok Shop 売れ筋 TOP10" color="text-rose-400">
+          <ul>
+            {(shop ?? []).map((item, i) => (
+              <RankRow
+                key={i}
+                rank={i + 1}
+                name={item.name}
+                sub={item.sub}
+                d={item.d}
+                url={item.url}
+                badge={
+                  item.kbeauty ? (
+                    <span className="shrink-0 flex items-center gap-0.5 text-[10px] font-bold text-amber-600 bg-amber-100 px-1.5 py-0.5 rounded-full">
+                      <Star className="w-2.5 h-2.5" />K
+                    </span>
+                  ) : null
+                }
+              />
+            ))}
+          </ul>
+        </Panel>
+
         {/* Hashtags */}
-        <Panel icon={Hash} title="ハッシュタグ TOP15" color="text-emerald-500">
+        <Panel icon={Hash} title="ハッシュタグ TOP10" color="text-emerald-500">
           <ul>
             {(hashtags ?? []).map((item, i) => (
               <RankRow key={i} rank={i + 1} name={`#${item.name}`} sub={item.sub} d={item.d} url={item.url} />

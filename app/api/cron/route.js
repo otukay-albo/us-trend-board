@@ -1,4 +1,4 @@
-import { fetchMusic, fetchArtists, fetchBeauty, fetchHashtags } from "@/lib/sources";
+import { fetchMusic, fetchArtists, fetchBeauty, fetchHashtags, fetchTikTokShop } from "@/lib/sources";
 import { saveSnapshot } from "@/lib/redis";
 
 export const runtime = "nodejs";
@@ -22,6 +22,7 @@ export async function GET(request) {
       artists: await fetchArtists().catch(() => null),
       beauty: await fetchBeauty().catch(() => null),
       hashtags: await fetchHashtags().catch(() => null),
+      shop: await fetchTikTokShop().catch(() => null),
     };
 
     // 有効な軸だけ保存（無効なら既存のRedisデータを温存して上書きしない）
