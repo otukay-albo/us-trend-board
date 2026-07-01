@@ -1,6 +1,7 @@
 import { readAll } from "@/lib/redis";
 import { fetchMusic, fetchArtists, fetchBeauty, fetchHashtags } from "@/lib/sources";
 import { buildInsight } from "@/lib/insight";
+import { getDailyTrivia } from "@/lib/trivia";
 import Board from "./Board";
 
 export const dynamic = "force-dynamic";
@@ -30,6 +31,7 @@ async function getData() {
 export default async function Home() {
   const { music, artists, beauty, hashtags } = await getData();
   const insight = buildInsight({ music, beauty, hashtags });
+  const trivia = getDailyTrivia();
 
   return (
     <Board
@@ -38,6 +40,7 @@ export default async function Home() {
       beauty={beauty}
       hashtags={hashtags}
       insight={insight}
+      trivia={trivia}
     />
   );
 }
